@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import ProductoModel from "../models/producto.model";
 import { CustomRequest } from "../middlewares/validar-jwt";
-import UsuarioModel from "../models/usuario.model";
+
 
 export const crearProducto = async (req: CustomRequest, resp: Response) => {
   const { body } = req;
@@ -29,7 +29,7 @@ export const getProductos = async (req: Request, resp: Response) => {
     //  Devuelve el listado de productos con la información del usuario que lo creo
     const productos = await ProductoModel.find().populate({
       path: "usuario",
-      select: " nombre, numeroDocumento, email",
+      select: "nombres numeroDocumento email",
     });
 
     resp.json({

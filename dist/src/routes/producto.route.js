@@ -11,6 +11,7 @@ const producto_controller_1 = require("../controllers/producto.controller");
 const router = (0, express_1.Router)();
 router.post("/", validar_jwt_1.default, [
     (0, express_validator_1.check)("nombre", "El nombre obligatorio").not().isEmpty(),
+    (0, express_validator_1.check)("descripcion", "La descripcion es obligatoria").not().isEmpty(),
     (0, express_validator_1.check)("precio", "El precio es obligatorio").not().isEmpty(),
     (0, express_validator_1.check)("categoria", "La categoria es obligatoria").not().isEmpty(),
     validate_fields_1.validateFields,

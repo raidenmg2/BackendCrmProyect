@@ -40,7 +40,7 @@ const getProductos = (req, resp) => __awaiter(void 0, void 0, void 0, function* 
         //  Devuelve el listado de productos con la información del usuario que lo creo
         const productos = yield producto_model_1.default.find().populate({
             path: "usuario",
-            select: " nombre, numeroDocumento, email",
+            select: "nombres numeroDocumento email",
         });
         resp.json({
             ok: true,

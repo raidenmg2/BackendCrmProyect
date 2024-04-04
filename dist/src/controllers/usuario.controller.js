@@ -12,12 +12,49 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.crearUsuario = void 0;
+exports.updateUsuario = exports.deleteUsuario = exports.crearUsuario = exports.getUnUsuarios = exports.getUsuarios = void 0;
 const usuario_model_1 = __importDefault(require("../models/usuario.model"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const getUsuarios = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        /**El busca todos los usuarios */
+        const usuarios = yield usuario_model_1.default.find();
+        resp.status(200).json({
+            ok: true,
+            usuarios,
+        });
+    }
+    catch (error) {
+        resp.status(400).json({
+            ok: false,
+            msn: `Error al consultar usuarios`,
+        });
+    }
+});
+exports.getUsuarios = getUsuarios;
+// busca un usuario en particular
+const getUnUsuarios = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        /**El busca un cliente */
+        const usuario = yield usuario_model_1.default.findById({ _id: id });
+        resp.status(200).json({
+            ok: true,
+            usuario: usuario,
+        });
+    }
+    catch (error) {
+        resp.status(400).json({
+            ok: false,
+            msn: `Error al buscar usuario`,
+        });
+    }
+});
+exports.getUnUsuarios = getUnUsuarios;
+// crea un usuario
 const crearUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    const { login, password, numeroDocumento } = body;
+    const { login, password } = body;
     try {
         const existeLogin = yield usuario_model_1.default.findOne({
             login: login,
@@ -25,16 +62,7 @@ const crearUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (existeLogin) {
             return res.status(409).json({
                 ok: false,
-                msg: `ya existe un usuario ${login} creado`,
-            });
-        }
-        const existeNumeroDocumento = yield usuario_model_1.default.findOne({
-            numeroDocumento: numeroDocumento,
-        });
-        if (existeNumeroDocumento) {
-            return res.status(409).json({
-                ok: false,
-                msg: `ya existe un usuario con número de documento ${numeroDocumento} creado`,
+                msg: `ya existe un login ${login} creado`,
             });
         }
         const newUsuario = new usuario_model_1.default(Object.assign({}, body));
@@ -58,4 +86,49 @@ const crearUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.crearUsuario = crearUsuario;
+// elimina usuario
+const deleteUsuario = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // id cliente
+        const id = req.params.id;
+        // const {body} = req;
+        // Tambien se puede decalrar de la siguiente forma const body = req.body;
+        // console.log('Esto es el Id', id);
+        // Eliminar cliente
+        const clienteElimino = yield usuario_model_1.default.findByIdAndDelete(id);
+        resp.status(200).json({
+            ok: true,
+            usuario: clienteElimino,
+        });
+    }
+    catch (error) {
+        resp.status(400).json({
+            ok: false,
+            msn: `Error al buscar al cliente {$error}`,
+        });
+    }
+});
+exports.deleteUsuario = deleteUsuario;
+const updateUsuario = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // id cliente
+        const id = req.params.id;
+        const { body } = req;
+        // Tambien se puede decalrar de la siguiente forma const body = req.body;
+        // console.log('Esto es el Id', id);
+        // actualizar cliente
+        const usuarioActualizo = yield usuario_model_1.default.findByIdAndUpdate(id, body, { new: true });
+        resp.status(200).json({
+            ok: true,
+            usuario: usuarioActualizo,
+        });
+    }
+    catch (error) {
+        resp.status(400).json({
+            ok: false,
+            msn: `Error al actualizar al usuario {$error}`,
+        });
+    }
+});
+exports.updateUsuario = updateUsuario;
 //# sourceMappingURL=usuario.controller.js.map

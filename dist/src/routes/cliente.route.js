@@ -1,15 +1,17 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const cliente_controler_1 = require("../controllers/cliente.controler");
 const express_validator_1 = require("express-validator");
 const validate_fields_1 = require("../middlewares/validate-fields");
+const validar_jwt_1 = __importDefault(require("../middlewares/validar-jwt"));
 /**Ruta cliente */
 //"path: /api/v1/cliente"
 const router = (0, express_1.Router)();
-router.post("/", 
-// validateJWT,
-[
+router.post("/", validar_jwt_1.default, [
     (0, express_validator_1.check)("nombres", "El primer nombre es obligatorio").not().isEmpty(),
     (0, express_validator_1.check)("apellidos", "El primer apellido es obligatorio").not().isEmpty(),
     (0, express_validator_1.check)("fechaNacimiento", "La fecha de nacimientno es obligatoria").not().isEmpty(),
@@ -29,9 +31,9 @@ router.post("/",
     validate_fields_1.validateFields,
 ], cliente_controler_1.crearClientes);
 router.get("/", cliente_controler_1.getClientes);
-router.get("/:id", /**validateJWT,*/ cliente_controler_1.getUnCliente);
-router.put("/:id", /**validateJWT,*/ cliente_controler_1.updateCliente);
-router.delete("/:id", /**validateJWT,*/ cliente_controler_1.deleteCliente);
-router.put("/estado/:id", /**validateJWT,*/ cliente_controler_1.updatEstadoCliente);
+router.get("/:id", validar_jwt_1.default, cliente_controler_1.getUnCliente);
+router.put("/:id", validar_jwt_1.default, cliente_controler_1.updateCliente);
+router.delete("/:id", validar_jwt_1.default, cliente_controler_1.deleteCliente);
+router.put("/estado/:id", validar_jwt_1.default, cliente_controler_1.updatEstadoCliente);
 exports.default = router;
 //# sourceMappingURL=cliente.route.js.map

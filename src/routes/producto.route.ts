@@ -10,6 +10,7 @@ router.post(
 validateJWT,
 [    
 check("nombre", "El nombre obligatorio").not().isEmpty(),
+check("descripcion", "La descripcion es obligatoria").not().isEmpty(),
 check("precio", "El precio es obligatorio").not().isEmpty(),
 check("categoria", "La categoria es obligatoria").not().isEmpty(),
 validateFields,

@@ -10,6 +10,7 @@ const cliente_route_1 = __importDefault(require("./routes/cliente.route"));
 const usuario_route_1 = __importDefault(require("./routes/usuario.route"));
 const auth_route_1 = __importDefault(require("./routes/auth.route"));
 const producto_route_1 = __importDefault(require("./routes/producto.route"));
+const oportunidad_route_1 = __importDefault(require("./routes/oportunidad.route"));
 const cors_1 = __importDefault(require("cors"));
 class Server {
     constructor() {
@@ -18,6 +19,7 @@ class Server {
             usuario: "/api/v1/usuario",
             auth: "/api/v1/auth",
             producto: "/api/v1/producto",
+            oportunidad: "/api/v1/oportunidad",
         };
         this.app = (0, express_1.default)();
         this.port = process.env.port || "3000";
@@ -41,6 +43,7 @@ class Server {
         this.app.use(this.apiPaths.usuario, usuario_route_1.default);
         this.app.use(this.apiPaths.auth, auth_route_1.default);
         this.app.use(this.apiPaths.producto, producto_route_1.default);
+        this.app.use(this.apiPaths.oportunidad, oportunidad_route_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

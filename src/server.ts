@@ -5,6 +5,7 @@ import  clienteRoutes  from "./routes/cliente.route";
 import  usuarioRoutes  from "./routes/usuario.route";
 import  authRoutes  from "./routes/auth.route";
 import productoRoutes from "./routes/producto.route"; 
+import oportunidadRoutes from "./routes/oportunidad.route"; 
 import cors from "cors";
 
 class Server {
@@ -16,6 +17,7 @@ class Server {
     usuario:"/api/v1/usuario",
     auth: "/api/v1/auth",
     producto: "/api/v1/producto",
+    oportunidad: "/api/v1/oportunidad",
   };
 
   constructor() {
@@ -46,6 +48,7 @@ class Server {
     this.app.use(this.apiPaths.usuario, usuarioRoutes);
     this.app.use(this.apiPaths.auth, authRoutes)
     this.app.use(this.apiPaths.producto, productoRoutes);
+    this.app.use(this.apiPaths.oportunidad, oportunidadRoutes);
   }
   listen(): void {
     this.app.listen(this.port, () => {

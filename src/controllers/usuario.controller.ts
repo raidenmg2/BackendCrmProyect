@@ -2,9 +2,53 @@ import { Request, Response } from "express";
 import UsuarioModel from "../models/usuario.model";
 import bcrypt from "bcryptjs";
 
+export const getUsuarios = async (req: Request, resp: Response) => {
+  try {
+    /**El busca todos los usuarios */
+    const usuarios = await UsuarioModel.find();
+    resp.status(200).json({
+      ok: true,
+      usuarios,
+    });
+  } catch (error) {
+    resp.status(400).json({
+      ok: false,
+      msn: `Error al consultar usuarios`,
+    });
+  }
+};
+
+
+// busca un usuario en particular
+
+export const getUnUsuarios = async (req: Request, resp: Response)=>{
+
+  try {
+    const id = req.params.id;
+
+    /**El busca un cliente */
+    const usuario = await UsuarioModel.findById({_id:id});
+    resp.status(200).json({
+      ok: true,
+      usuario:usuario,
+      
+    });
+  } catch (error) {
+    resp.status(400).json({
+      ok: false,
+      msn: `Error al buscar usuario` ,
+    });
+
+
+  }
+
+  
+}
+
+// crea un usuario
 export const crearUsuario = async (req: Request, res: Response) => {
   const { body } = req;
-  const { login, password,numeroDocumento } = body;
+  const { login, password } = body;
 
   try {
     const existeLogin = await UsuarioModel.findOne({
@@ -13,18 +57,10 @@ export const crearUsuario = async (req: Request, res: Response) => {
     if (existeLogin) {
       return res.status(409).json({
         ok: false,
-        msg: `ya existe un usuario ${login} creado`,
+        msg: `ya existe un login ${login} creado`,
       });
     }
-    const existeNumeroDocumento = await UsuarioModel.findOne({
-      numeroDocumento: numeroDocumento,
-    });
-    if (existeNumeroDocumento) {
-      return res.status(409).json({
-        ok: false,
-        msg: `ya existe un usuario con número de documento ${numeroDocumento} creado`,
-      });
-    }
+
     const newUsuario = new UsuarioModel({
       ...body,
     });
@@ -47,5 +83,58 @@ export const crearUsuario = async (req: Request, res: Response) => {
       error,
       msg: "Error al crear al usuario, contecte al administrador",
     });
+  }
+};
+
+
+// elimina usuario
+export const deleteUsuario = async (req: Request, resp: Response) => {
+  try {
+    // id cliente
+    const id = req.params.id;
+    // const {body} = req;
+    // Tambien se puede decalrar de la siguiente forma const body = req.body;
+
+    // console.log('Esto es el Id', id);
+    // Eliminar cliente
+
+    const clienteElimino = await UsuarioModel.findByIdAndDelete(id);
+    resp.status(200).json({
+      ok: true,
+      usuario:clienteElimino, 
+    });
+  } catch (error) {
+    resp.status(400).json({
+      ok: false,
+      msn: `Error al buscar al cliente {$error}` ,
+    });
+
+
+  }
+};
+
+
+export const updateUsuario = async (req: Request, resp: Response) => {
+  try {
+    // id cliente
+    const id = req.params.id;
+    const {body} = req;
+    // Tambien se puede decalrar de la siguiente forma const body = req.body;
+
+    // console.log('Esto es el Id', id);
+    // actualizar cliente
+
+    const usuarioActualizo = await UsuarioModel.findByIdAndUpdate(id, body,{ new:true},);
+    resp.status(200).json({
+      ok: true,
+      usuario:usuarioActualizo, 
+    });
+  } catch (error) {
+    resp.status(400).json({
+      ok: false,
+      msn: `Error al actualizar al usuario {$error}` ,
+    });
+
+
   }
 };
