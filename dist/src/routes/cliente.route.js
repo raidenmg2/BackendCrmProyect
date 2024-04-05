@@ -32,6 +32,7 @@ router.post("/", validar_jwt_1.default, [
 ], cliente_controler_1.crearClientes);
 router.get("/", cliente_controler_1.getClientes);
 router.get("/:id", validar_jwt_1.default, cliente_controler_1.getUnCliente);
+router.get("/historial/:id", validar_jwt_1.default, cliente_controler_1.getHistorialOportunidades);
 router.put("/:id", validar_jwt_1.default, cliente_controler_1.updateCliente);
 router.delete("/:id", validar_jwt_1.default, cliente_controler_1.deleteCliente);
 router.put("/estado/:id", validar_jwt_1.default, cliente_controler_1.updatEstadoCliente);

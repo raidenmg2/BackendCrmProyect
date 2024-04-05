@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { crearClientes , deleteCliente, getClientes, getUnCliente, updatEstadoCliente, updateCliente } from "../controllers/cliente.controler";
+import { crearClientes , deleteCliente, getClientes, getHistorialOportunidades, getUnCliente, updatEstadoCliente, updateCliente } from "../controllers/cliente.controler";
 import {check} from "express-validator";
 import { validateFields } from "../middlewares/validate-fields";
 import validateJWT from "../middlewares/validar-jwt";
@@ -34,6 +34,7 @@ crearClientes);
 
 router.get("/", getClientes);
 router.get("/:id",validateJWT, getUnCliente);
+router.get("/historial/:id",validateJWT, getHistorialOportunidades);
 router.put("/:id",validateJWT, updateCliente);
 router.delete("/:id",validateJWT, deleteCliente);
 router.put("/estado/:id",validateJWT,updatEstadoCliente);

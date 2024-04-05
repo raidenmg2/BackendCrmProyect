@@ -12,39 +12,42 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductos = exports.crearProducto = void 0;
-const producto_model_1 = __importDefault(require("../models/producto.model"));
-const crearProducto = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getHistorialOportunidades = exports.crearRegistroGestion = void 0;
+const historialOportunidad_model_1 = __importDefault(require("../models/historialOportunidad.model"));
+const crearRegistroGestion = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     const id = req._id;
     try {
-        const productoNuevo = new producto_model_1.default(Object.assign({ usuario: id }, body));
-        const productoCreado = yield productoNuevo.save();
+        console.log('id', id);
+        console.log('body', body);
+        const nuevoEstado = new historialOportunidad_model_1.default(Object.assign({ usuario: id, oportunidad: id }, body));
+        const EstadoCreado = yield nuevoEstado.save();
         resp.status(200).json({
             ok: true,
             msg: "Producto creado satisfactoriamente",
-            cliente: productoCreado,
+            cliente: EstadoCreado,
         });
     }
     catch (error) {
         console.log(error);
         resp.status(400).json({
             ok: false,
-            msg: "Error al crear el producto",
+            msg: "Error al crear la oportunidad",
         });
     }
 });
-exports.crearProducto = crearProducto;
-const getProductos = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+exports.crearRegistroGestion = crearRegistroGestion;
+const getHistorialOportunidades = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //  Devuelve el listado de productos con la información del usuario que lo creo
-        const productos = yield producto_model_1.default.find().populate({
+        const idOportunidad = req.params.idOportunidad;
+        const historial = yield historialOportunidad_model_1.default.find({ oportunidadId: idOportunidad }).sort({ fecha: -1 }).populate({
             path: "usuario",
-            select: "email",
+            select: "nombres numeroDocumento email",
         });
         resp.json({
             ok: true,
-            productos,
+            historial,
         });
     }
     catch (error) {
@@ -54,5 +57,5 @@ const getProductos = (req, resp) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
-exports.getProductos = getProductos;
-//# sourceMappingURL=producto.controller.js.map
+exports.getHistorialOportunidades = getHistorialOportunidades;
+//# sourceMappingURL=historialOportunidades.controller.js.map

@@ -16,6 +16,7 @@ router.post("/", validar_jwt_1.default, [
     validate_fields_1.validateFields,
 ], oportunidad_controller_1.crearOportunidad);
 router.get("/", validar_jwt_1.default, oportunidad_controller_1.getOportunidades);
+router.get("/:id", validar_jwt_1.default, oportunidad_controller_1.getUnaOportunidad);
 router.put("/:id", validar_jwt_1.default, oportunidad_controller_1.updateOportunidad);
 exports.default = router;
 //# sourceMappingURL=oportunidad.route.js.map

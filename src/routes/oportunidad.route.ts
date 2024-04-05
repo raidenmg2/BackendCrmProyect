@@ -2,7 +2,7 @@ import { Router } from "express";
 import {check} from "express-validator";
 import {validateFields } from "../middlewares/validate-fields"
 import validateJWT from "../middlewares/validar-jwt";
-import { crearOportunidad, getOportunidades, updateOportunidad } from "../controllers/oportunidad.controller";
+import { crearOportunidad, getOportunidades, getUnaOportunidad, updateOportunidad } from "../controllers/oportunidad.controller";
 
 const router = Router();
 router.post(
@@ -18,5 +18,7 @@ crearOportunidad
 );
 
 router.get("/", validateJWT, getOportunidades);
+router.get("/:id", validateJWT, getUnaOportunidad);
+
 router.put("/:id",validateJWT,updateOportunidad);
 export default router;

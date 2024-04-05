@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateOportunidad = exports.getOportunidades = exports.crearOportunidad = void 0;
+exports.getUnaOportunidad = exports.updateOportunidad = exports.getOportunidades = exports.crearOportunidad = void 0;
 const oportunidad_model_1 = __importDefault(require("../models/oportunidad.model"));
 const crearOportunidad = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
@@ -40,7 +40,7 @@ const getOportunidades = (req, resp) => __awaiter(void 0, void 0, void 0, functi
         //  Devuelve el listado de las oportunidades con la información del usuario que lo creo
         const oportunidad = yield oportunidad_model_1.default.find().populate({
             path: "usuario",
-            select: " nombre numeroDocumento email",
+            select: " nombres numeroDocumento email",
         });
         resp.json({
             ok: true,
@@ -60,13 +60,15 @@ const updateOportunidad = (req, resp) => __awaiter(void 0, void 0, void 0, funct
         // id oportunidad
         const id = req.params.id;
         const { body } = req;
+        console.log('body', body);
         // Tambien se puede decalrar de la siguiente forma const body = req.body;
         // console.log('Esto es el Id', id);
         // actualizar cliente
-        const oportunidadActualizo = yield oportunidad_model_1.default.findByIdAndUpdate(id, body, { new: true });
+        const oportunidadActualizada = yield oportunidad_model_1.default.findByIdAndUpdate(id, body, { new: true });
+        console.log('Oportunidad act ', oportunidadActualizada);
         resp.status(200).json({
             ok: true,
-            usuario: oportunidadActualizo,
+            usuario: oportunidadActualizada,
         });
     }
     catch (error) {
@@ -77,4 +79,24 @@ const updateOportunidad = (req, resp) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.updateOportunidad = updateOportunidad;
+const getUnaOportunidad = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        // console.log('Esto es el Id', id);
+        // console.log('Esto es el Id', req);
+        /**El busca un cliente */
+        const oportunidades = yield oportunidad_model_1.default.findById({ _id: id });
+        resp.status(200).json({
+            ok: true,
+            oportunidades: oportunidades,
+        });
+    }
+    catch (error) {
+        resp.status(400).json({
+            ok: false,
+            msn: `Error al buscar la oportunidad`,
+        });
+    }
+});
+exports.getUnaOportunidad = getUnaOportunidad;
 //# sourceMappingURL=oportunidad.controller.js.map

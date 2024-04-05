@@ -9,6 +9,7 @@ const OportunidadSchema = new mongoose_1.Schema({
     gestion: { type: String, requiered: true },
     usuario: { type: mongoose_1.Schema.Types.ObjectId, ref: "usuario", required: true },
     createdAt: { type: Date, default: Date.now() },
+    notasInteraccion: { type: String },
 });
 const OportunidadModel = (0, mongoose_1.model)("oportunidad", OportunidadSchema);
 exports.default = OportunidadModel;

@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatEstadoCliente = exports.deleteCliente = exports.updateCliente = exports.getUnCliente = exports.getClientes = exports.crearClientes = void 0;
+exports.getHistorialOportunidades = exports.updatEstadoCliente = exports.deleteCliente = exports.updateCliente = exports.getUnCliente = exports.getClientes = exports.crearClientes = void 0;
 const cliente_model_1 = __importDefault(require("../models/cliente.model"));
+const oportunidad_model_1 = __importDefault(require("../models/oportunidad.model"));
 /**se crea el cliente  */
 const crearClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
@@ -69,9 +70,6 @@ exports.getClientes = getClientes;
 const getUnCliente = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;
-        // console.log('Esto es el Id', id);
-        // console.log('Esto es el Id', req);
-        /**El busca un cliente */
         const clientes = yield cliente_model_1.default.findById({ _id: id });
         resp.status(200).json({
             ok: true,
@@ -155,4 +153,22 @@ const updatEstadoCliente = (req, resp) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.updatEstadoCliente = updatEstadoCliente;
+const getHistorialOportunidades = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const clienteId = req.params.id;
+        const historialOportunidades = yield oportunidad_model_1.default.find({ 'cliente._id': clienteId });
+        console.log('id', clienteId);
+        resp.status(200).json({
+            ok: true,
+            oportunidades: historialOportunidades,
+        });
+    }
+    catch (error) {
+        resp.status(400).json({
+            ok: false,
+            msn: `Error al buscar historial de  oportunidades`,
+        });
+    }
+});
+exports.getHistorialOportunidades = getHistorialOportunidades;
 //# sourceMappingURL=cliente.controler.js.map

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import clienteModel from "../models/cliente.model";
 import ClienteModel from "../models/cliente.model";
+import OportunidadModel from "../models/oportunidad.model";
 
 
 /**se crea el cliente  */
@@ -61,10 +62,7 @@ export const getClientes = async (req: Request, resp: Response) => {
 export const getUnCliente = async (req: Request, resp: Response) => {
   try {
     const id = req.params.id;
-    // console.log('Esto es el Id', id);
-    // console.log('Esto es el Id', req);
 
-    /**El busca un cliente */
     const clientes = await ClienteModel.findById({_id:id});
     resp.status(200).json({
       ok: true,
@@ -154,6 +152,26 @@ export const updatEstadoCliente = async (req: Request, resp: Response) => {
     resp.status(400).json({
       ok: false,
       msn: `Error al buscar al cliente {$error}` ,
+    });
+
+
+  }
+};
+
+export const getHistorialOportunidades = async (req: Request, resp: Response) => {
+  try {
+    const clienteId = req.params.id ;
+    const historialOportunidades = await OportunidadModel.find({'cliente._id': clienteId});
+    console.log('id', clienteId)
+    resp.status(200).json({
+      ok: true,
+      oportunidades: historialOportunidades,
+      
+    });
+  } catch (error) {
+    resp.status(400).json({
+      ok: false,
+      msn: `Error al buscar historial de  oportunidades` ,
     });
 
 

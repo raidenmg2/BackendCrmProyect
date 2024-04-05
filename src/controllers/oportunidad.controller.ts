@@ -28,7 +28,7 @@ export const getOportunidades = async (req: Request, resp: Response) => {
     //  Devuelve el listado de las oportunidades con la información del usuario que lo creo
     const oportunidad = await OportunidadModel.find().populate({
       path: "usuario",
-      select: " nombre numeroDocumento email",
+      select: " nombres numeroDocumento email",
     });
 
     resp.json({
@@ -43,25 +43,26 @@ export const getOportunidades = async (req: Request, resp: Response) => {
   }
 };
 
-
 export const updateOportunidad = async (req: Request, resp: Response) => {
   try {
     // id oportunidad
     const id = req.params.id;
     const { body } = req;
+    console.log('body', body)
     // Tambien se puede decalrar de la siguiente forma const body = req.body;
 
     // console.log('Esto es el Id', id);
     // actualizar cliente
 
-    const oportunidadActualizo = await OportunidadModel.findByIdAndUpdate(
+    const oportunidadActualizada = await OportunidadModel.findByIdAndUpdate(
       id,
       body,
       { new: true }
-    );
+          );
+          console.log('Oportunidad act ', oportunidadActualizada)
     resp.status(200).json({
       ok: true,
-      usuario: oportunidadActualizo,
+      usuario: oportunidadActualizada,
     });
   } catch (error) {
     resp.status(400).json({
@@ -70,3 +71,35 @@ export const updateOportunidad = async (req: Request, resp: Response) => {
     });
   }
 };
+
+
+
+export const getUnaOportunidad = async (req: Request, resp: Response) => {
+  try {
+    const id = req.params.id;
+    // console.log('Esto es el Id', id);
+    // console.log('Esto es el Id', req);
+
+    /**El busca un cliente */
+    const oportunidades = await OportunidadModel.findById({_id:id});
+    resp.status(200).json({
+      ok: true,
+      oportunidades: oportunidades,
+      
+    });
+  } catch (error) {
+    resp.status(400).json({
+      ok: false,
+      msn: `Error al buscar la oportunidad` ,
+    });
+
+
+  }
+};
+
+
+
+
+
+
+

@@ -29,7 +29,7 @@ export const getProductos = async (req: Request, resp: Response) => {
     //  Devuelve el listado de productos con la información del usuario que lo creo
     const productos = await ProductoModel.find().populate({
       path: "usuario",
-      select: "nombres numeroDocumento email",
+      select: "email",
     });
 
     resp.json({
