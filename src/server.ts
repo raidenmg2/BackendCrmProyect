@@ -22,7 +22,7 @@ class Server {
 
   constructor() {
     this.app = express();
-    this.port = process.env.port || "3000";
+    this.port = process.env.port || "5000";
 
     // conección base de datos
     dbConnection();

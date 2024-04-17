@@ -22,7 +22,7 @@ class Server {
             oportunidad: "/api/v1/oportunidad",
         };
         this.app = (0, express_1.default)();
-        this.port = process.env.port || "3000";
+        this.port = process.env.port || "5000";
         // conección base de datos
         (0, connection_1.dbConnection)();
         // metodos que se ejecutan inicialmente
